@@ -1,1 +1,1 @@
-# These Project Was Made By "MohamedFouad"
+# These Projects Were Made By "Mohamed Fouad"
