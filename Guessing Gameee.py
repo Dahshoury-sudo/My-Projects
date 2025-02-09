@@ -2,6 +2,8 @@ import random
 import sys
 
 def menu():
+    global printed
+    printed = False
     print("#" * 60)
     print(" This Game Was Made By Fo2sh ".center(60,"#"))
     print(" 🎯 guessing game ".center(60,"#"))
@@ -9,15 +11,18 @@ def menu():
 
 
 def guessed_number():
+    global printed
+    if printed == False:
+        print("Guess A number between 1 and 10")
+        printed = True
 
-    print("Guess A number between 1 and 10")
     while(True):
         try:
             x = int(input("My Guess Is: "))
             if x in [1,2,3,4,5,6,7,8,9,10]:
                 break
             else:
-                print("⚠️ ⚠️ ⚠️  Wrong Input")
+                print("⚠️ ⚠️ ⚠️  Wrong Input..Please From 1 To 10")
 
         except ValueError:
             print("⚠️  Please enter an integer number")
