@@ -5,8 +5,8 @@ def menu():
     global printed
     printed = False
     print("#" * 60)
-    print(" This Game Was Made By Fo2sh ".center(60,"#"))
     print(" 🎯 guessing game ".center(60,"#"))
+    print(" This Game Was Made By Fo2sh ".center(60,"#"))
     print("#" * 60)
 
 
