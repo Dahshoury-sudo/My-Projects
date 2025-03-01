@@ -1,3 +1,4 @@
+import os
 class Player:
     Sum_of_scores = []
     def __init__(self,name):
@@ -54,7 +55,7 @@ def NumberOfPlayers():
                 return NumberOfPlayers
 
         except:
-            print("Please Enter An integer number")
+            print("Please Enter An integer number From 3 to 6")
 
 
 def Game():
@@ -63,7 +64,7 @@ def Game():
     print_other = False
     if restart_names == True or FirstTime == True:
         Num_of_players = NumberOfPlayers()
-        Player_Names = [Player(input(f"Player{number+1} Enter Your Name: ")) for number in range(Num_of_players)]
+        Player_Names = [Player(input(f"Player{number+1} Enter Your Name: ").capitalize()) for number in range(Num_of_players)]
         FirstTime = False
     global prefixes
     prefixes = prefixes_original[:]
@@ -72,16 +73,21 @@ def Game():
         player.scores = []
     i = 0
     End_Menu = Menu()
+
+    ClearScreen()
+
     while i < 5:
         for player in Player_Names:
             player.SetScore()
         i += 1
+        ClearScreen()
         prefixes.pop(0)
+
+    ClearScreen()
 
     for player in Player_Names:
         player.Calculate_Sum()
 
-    print("#" * 40)
     Winner_Loser()
     others_scores()
     Choice = End_Menu.Display_EndMenu()
@@ -93,12 +99,10 @@ def Game():
     elif Choice == 2:
         prefixes = prefixes_original.copy()
         restart_names = True
-
         Game()
 
     else:
         print("Thanks For Using The APP ❤️  ❤️ ")
-
 
 
 def Winner_Loser():
@@ -138,10 +142,20 @@ def others_scores():
 
         j += 1
 
+def MainMenu():
+    print("#"*60)
+    print(" Score Scrow App ".center(60,"#"))
+    print(" This Game Was Made By Mohamed_Fouad (Fo2sh) ".center(60,"#"))
+    print("#"*60)
+    print("\n", end="")
+
+def ClearScreen():
+    os.system("cls")
+
 if __name__ == "__main__":
     prefixes_original = ["First","Second","Third","Fourth","Fifth","Sixth"]
     FirstTime = True
     restart_names = False
     print_other = False
+    MainMenu()
     Game()
-
