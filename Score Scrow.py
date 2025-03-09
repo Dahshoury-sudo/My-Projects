@@ -117,8 +117,8 @@ def Winner_Loser():
     
 
     if len(king_indices) == 1 and len(cooz_indices) == 1:
-        Loser_index = Player.Sum_of_scores.index(min(Player.Sum_of_scores))
-        Winner_index = Player.Sum_of_scores.index(max(Player.Sum_of_scores))
+        Loser_index = Player.Sum_of_scores.index(max(Player.Sum_of_scores))
+        Winner_index = Player.Sum_of_scores.index(min(Player.Sum_of_scores))
 
         print(f"{Player_Names[Winner_index].name} Is The KIIIING With Score Of : {Player_Names[Winner_index].sum} ")
         print(f"{Player_Names[Loser_index].name} Is The COOOOOZ With Score Of : {Player_Names[Loser_index].sum} ")
