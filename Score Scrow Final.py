@@ -1,3 +1,4 @@
+
 import os
 class Player:
     Sum_of_scores = []
@@ -28,6 +29,7 @@ class Player:
 
 class Menu:
     def Display_EndMenu(self):
+        print("#"*34)
         print("1- Restart With Same Players")
         print("2- Restart With Another Players")
         print("3- Quit Game")
@@ -37,11 +39,11 @@ class Menu:
 
             try:
 
-                choice = int(input("Enter Your Choice (1 or 2 or 3): "))
+                choice = int(input("Enter Your Choice (1 or 2 or 3 or 4): "))
                 break
             
             except ValueError:
-                print("Please Enter an integer number (1 or 2 or 3): ")
+                print("Please Enter an integer number (1 or 2 or 3 or 4): ")
 
             except :
                 print("Error Happend Please Try Again")
@@ -164,7 +166,7 @@ def others_scores():
 def MainMenu():
     print("#"*60)
     print(" Score Scrow App ".center(60,"#"))
-    print(" This Game Was Made By Mohamed_Fouad (Fo2sh) ".center(60,"#"))
+    print(" This App Was Made By Mohamed_Fouad (Fo2sh) ".center(60,"#"))
     print("#"*60)
     print("\n", end="")
 
