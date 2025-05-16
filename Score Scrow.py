@@ -1,161 +1,134 @@
 import os
+
 class Player:
-    Sum_of_scores = []
-    def __init__(self,name):
+    def __init__(self, name):
         self.name = name
         self.scores = []
-        self.sum = 0
-    def SetScore(self):
+        self.total_score = 0
+
+    def set_score(self, round_name):
         while True:
             try:
-                self.round_score = int(input(f"What is {self.name} Score For {prefixes[0]} Round: "))
-                self.scores.append(self.round_score)
+                score = int(input(f"What is {self.name}'s score for the {round_name} round: "))
+                if round_name in ["Fourth", "Fifth"]:
+                    self.scores.append(score * 2)
+                else:
+                    self.scores.append(score)
                 break
-
             except ValueError:
-                print("Please Enter An Integer Value")
-            
-            except:
-                print("Error Happend")
-    
-    def Calculate_Sum(self):
-        self.sum = sum(self.scores)
-        Player.Sum_of_scores.append(self.sum)
-        return self.sum
+                print("Please enter an integer value.")
+            except Exception as e:
+                print(f"An error occurred: {e}")
 
-class Menu:
-    def Display_EndMenu(self):
-        print("1- Restart With Same Players")
-        print("2- Restart With Another Players")
-        print("3- Quit Game")
+    def calculate_total_score(self):
+        self.total_score = sum(self.scores)
+        return self.total_score
 
+
+class Game:
+    def __init__(self):
+        self.players = []
+        self.rounds = ["First", "Second", "Third", "Fourth", "Fifth"]
+        self.first_time = True
+
+    def setup_players(self):
+        num_players = self.get_number_of_players()
+        self.players = [Player(input(f"Player {i + 1}, enter your name: ").capitalize()) for i in range(num_players)]
+        self.first_time = False
+
+    @staticmethod
+    def get_number_of_players():
         while True:
-
             try:
-
-                choice = int(input("Enter Your Choice (1 or 2 or 3): "))
-                break
-            
+                num_players = int(input("Enter the number of players (3 to 12): "))
+                if 3 <= num_players <= 12:
+                    return num_players
+                print("Please enter a number between 3 and 12.")
             except ValueError:
-                print("Please Enter an integer number (1 or 2 or 3): ")
+                print("Please enter an integer.")
 
-            except :
-                print("Error Happend Please Try Again")
+    def play_rounds(self):
+        for round_name in self.rounds:
+            self.clear_screen()
+            for player in self.players:
+                player.set_score(round_name)
+        self.clear_screen()
 
-        return choice
+    def calculate_scores(self):
+        for player in self.players:
+            player.calculate_total_score()
 
+    def determine_winners(self):
+        scores = [player.total_score for player in self.players]
+        min_score = min(scores)
+        max_score = max(scores)
+        winners = [player for player in self.players if player.total_score == min_score]
+        losers = [player for player in self.players if player.total_score == max_score]
 
-def NumberOfPlayers():
-    while True:
-        try:
-            NumberOfPlayers = int(input("Enter The Number Of Players Max is 6 : "))
-            if NumberOfPlayers > 6 or NumberOfPlayers < 3:
-                print("Please From 3 to 6")
-            else:
-                return NumberOfPlayers
-
-        except:
-            print("Please Enter An integer number From 3 to 6")
-
-
-def Game():
-    
-    global Player_Names,FirstTime,restart_names,print_other
-    print_other = False
-    if restart_names == True or FirstTime == True:
-        Num_of_players = NumberOfPlayers()
-        Player_Names = [Player(input(f"Player{number+1} Enter Your Name: ").capitalize()) for number in range(Num_of_players)]
-        FirstTime = False
-    global prefixes
-    prefixes = prefixes_original[:]
-    Player.Sum_of_scores = []
-    for player in Player_Names:
-        player.scores = []
-    i = 0
-    End_Menu = Menu()
-
-    ClearScreen()
-
-    while i < 5:
-        for player in Player_Names:
-            player.SetScore()
-        i += 1
-        ClearScreen()
-        prefixes.pop(0)
-
-    ClearScreen()
-
-    for player in Player_Names:
-        player.Calculate_Sum()
-
-    Winner_Loser()
-    others_scores()
-    Choice = End_Menu.Display_EndMenu()
-
-    if Choice == 1:
-        prefixes = prefixes_original.copy()
-        restart_names = False
-        Game()
-    elif Choice == 2:
-        prefixes = prefixes_original.copy()
-        restart_names = True
-        Game()
-
-    else:
-        print("Thanks For Using The APP ❤️  ❤️ ")
-
-
-def Winner_Loser():
-    global Winner_index
-    global Loser_index
-    global king_indices
-    global cooz_indices
-    global print_other
-
-    king_indices = [i for i,d in enumerate(Player.Sum_of_scores,0) if d == max(Player.Sum_of_scores)]
-    cooz_indices = [i for i,d in enumerate(Player.Sum_of_scores,0) if d == min(Player.Sum_of_scores)]
-    
-
-    if len(king_indices) == 1 and len(cooz_indices) == 1:
-        Loser_index = Player.Sum_of_scores.index(max(Player.Sum_of_scores))
-        Winner_index = Player.Sum_of_scores.index(min(Player.Sum_of_scores))
-
-        print(f"{Player_Names[Winner_index].name} Is The KIIIING With Score Of : {Player_Names[Winner_index].sum} ")
-        print(f"{Player_Names[Loser_index].name} Is The COOOOOZ With Score Of : {Player_Names[Loser_index].sum} ")
-        print_other = True
-
-    else:
-        print_other = False
-        for player in Player_Names:
-            print(f"{player.name} Has A Final Score Of {player.sum}")
-
-
-def others_scores():
-    j = 0
-    while j < len(Player_Names) and print_other == True:
-        if j == Winner_index or j == Loser_index:
-            j += 1
-            continue
+        if len(winners) == 1 and len(losers) == 1:
+            print(f"{winners[0].name} is the KING with a score of {winners[0].total_score}!")
+            print(f"{losers[0].name} is the COOZ with a score of {losers[0].total_score}!")
+            self.display_other_scores(winners[0], losers[0])
         else:
-            if print_other == True:
-                print(f"{Player_Names[j].name} Score Is {Player_Names[j].sum}")
+            for player in self.players:
+                print(f"{player.name} has a final score of {player.total_score}.")
 
-        j += 1
+    def display_other_scores(self, winner, loser):
+        for player in self.players:
+            if player not in [winner, loser]:
+                print(f"{player.name}'s score is {player.total_score}.")
 
-def MainMenu():
-    print("#"*60)
-    print(" Score Scrow App ".center(60,"#"))
-    print(" This Game Was Made By Mohamed_Fouad (Fo2sh) ".center(60,"#"))
-    print("#"*60)
-    print("\n", end="")
+    @staticmethod
+    def clear_screen():
+        os.system("cls" if os.name == "nt" else "clear")
 
-def ClearScreen():
-    os.system("cls")
+    def start(self):
+        if self.first_time:
+            self.setup_players()
+        self.play_rounds()
+        self.calculate_scores()
+        self.determine_winners()
+        self.end_menu()
+
+    def end_menu(self):
+        while True:
+            print("#" * 34)
+            print("1. Restart with the same players")
+            print("2. Restart with new players")
+            print("3. Quit game")
+            print("4. Show all rounds' scores for all players")
+            try:
+                choice = int(input("Enter your choice (1-4): "))
+                if choice == 1:
+                    self.first_time = False
+                    self.start()
+                elif choice == 2:
+                    self.first_time = True
+                    self.start()
+                elif choice == 3:
+                    print("Thanks for using the app! ❤️❤️")
+                    break
+                elif choice == 4:
+                    self.clear_screen()
+                    for player in self.players:
+                        print(f"{player.name}'s round scores: {player.scores}")
+                    input("Press Enter to continue...")
+                else:
+                    print("Invalid choice. Please try again.")
+            except ValueError:
+                print("Please enter a valid integer.")
+
+
+def main():
+    print("#" * 60)
+    print(" Score Scrow App ".center(60, "#"))
+    print(" This app was made by Mohamed_Fouad (Fo2sh) ".center(60, "#"))
+    print("#" * 60)
+    print()
+
+    game = Game()
+    game.start()
+
 
 if __name__ == "__main__":
-    prefixes_original = ["First","Second","Third","Fourth","Fifth","Sixth"]
-    FirstTime = True
-    restart_names = False
-    print_other = False
-    MainMenu()
-    Game()
+    main()
