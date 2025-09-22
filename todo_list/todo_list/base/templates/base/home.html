@@ -1,0 +1,13 @@
+{%extends 'main.html'%}
+
+{%block content%}
+
+
+{%for task in tasks%}
+
+{{task.title}} ------------- {{task.description}} ------------{{task.completed}}
+<br>
+
+{%endfor%}
+
+{%endblock%}

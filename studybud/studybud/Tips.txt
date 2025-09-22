@@ -1,0 +1,97 @@
+we type our database tables in models.py
+
+the attributes are the colums and the class name is the table name
+
+we have to type the attributes and what type there are like text or what
+
+null = True, blank = True
+ means this table can have nothing in it but null is for database and blank is for django
+
+ auto_now this runs everytime we call a save() method
+ auto_now_add this runs only one time which is the time we created the instance
+
+
+
+ #how to make query on a table ?
+ queryset = ModelName.object.all()   # 'all()' here is the method that can be changed to get , post , whatever
+ the ModelName is the name of the table 
+
+
+
+
+# rooms = [
+    {'id': 1,'name':"Premium"},
+    {'id': 2,'name':"Master"},
+    {'id': 3,'name':"Cabin1"},
+    {'id': 4,'name':"Cabin2"}
+]
+ # def home(request):
+      context = {'shit':rooms} # pass rooms with alias 'shit' to the home.html
+      return render(request,"home.html",context)
+
+# in that scenario we passed context to the home.html file and we passed the list called 'rooms' but with alias 'shit'
+so in home.html file the name of variable rooms is called shit 
+
+
+
+to access dictionary values we use dictname.key and not dictname[key]
+
+
+
+<a href = "{%url 'room' room.id%}"> name:{{room.name}} </a> = <a href = "room/{{room.id}}"> name:{{room.name}} </a>
+
+
+
+
+class Meta: # Meta Should Be Capitalized
+The Meta class is used to configure the form.
+It tells Django which model to use and which fields to include.
+
+
+
+RoomForm(instance=room)	Creates a form pre-filled with existing data (for editing)
+
+
+
+
+GET sends data throguh url and its visible
+POST sends data through url and it's not visible
+
+
+
+the authenticate() method hashes the password and don't store the password as a plain text
+so we can't use a UserForm like we did in RoomForm cuz the room info will be stored as plain text and the user info aswell
+so that is wrong cuz when user login, django hashes the password and compare between so this won't work for UserForm unless we hash it ourselves 
+
+
+
+the method get() in modelname.objects.get()   Return only 1 value if i want to return more than 1 value i use filter()
+or i use parentmodel.childmodel_set.all()      if i have access to the parent 
+
+
+
+
+we use form.save() when we need form validation and we don't use it when we want a non validation fields like bio,description,etc....
+
+
+
+if the html form if action="" that means when i press sumbit it will take me to the same url that i clicked that sumbit button form
+and if there is a search bar and has a query in it, it's gonna be send to the url after the route
+EX:
+            <form class="header__search" method="GET" action="">
+                <input name = 'q' placeholder="Search for topics" />
+            </form>
+this will be takes to route/q={{what the user typed}}
+
+
+
+we use the forms.py when we want to store something in the database
+
+
+......................................................... RESTAPI .........................................................
+
+@api_view([param]) this decorator is being set before the functions in base.api.views.py
+the param could be any method that i want the api to do like 'GET' , 'POST' , 'PUT' , etc......
+
+
+
